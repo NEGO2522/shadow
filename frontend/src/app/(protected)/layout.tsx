@@ -17,9 +17,13 @@ export default async function TabsLayout({
 
   return (
     <Page>
-      {children}
-      <Page.Footer className="px-0 fixed bottom-0 w-full bg-white">
-        <Navigation />
+      <Page.Main className="no-scrollbar">
+        {children}
+      </Page.Main>
+      <Page.Footer>
+        <div className="nav-bar-pill w-full">
+          <Navigation />
+        </div>
       </Page.Footer>
     </Page>
   );
