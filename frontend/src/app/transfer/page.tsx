@@ -46,11 +46,11 @@ export default function TransferPage() {
     const formattedAmount = Number(amount).toLocaleString();
 
     return (
-        <div className="flex h-[100dvh] flex-col bg-[#141416] tracking-wide text-white relative mx-auto sm:border sm:border-neutral-800 max-w-md font-sans">
+        <div className="app-screen">
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 pt-12 pb-6">
-                <Link href="/" className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e1e24] text-gray-300 relative border border-white/5 active:scale-95 transition-transform">
+            <div className="screen-header">
+                <Link href="/" className="btn-icon-round">
                     <ArrowLeft size={18} strokeWidth={2.5} />
                 </Link>
                 <h1 className="text-base font-semibold tracking-wide">
@@ -66,7 +66,7 @@ export default function TransferPage() {
                     <span className="truncate">{formattedAmount}</span><span className="text-white/40">.00</span>
                     <div className="w-0.5 h-12 bg-indigo-500 animate-pulse ml-1 opacity-80 shrink-0"></div>
                 </h2>
-                <p className="text-sm font-medium text-white/60 tracking-wide">
+                <p className="subtitle-sm font-medium">
                     Your Available Balance (₹ 20,456.00)
                 </p>
             </div>
@@ -94,13 +94,13 @@ export default function TransferPage() {
 
                 {/* Category Card Menu */}
                 <div className="relative">
-                    <button onClick={() => setShowCategories(!showCategories)} className="flex w-full items-center justify-between bg-[#2a2a32] p-4 rounded-3xl border border-white/5 active:scale-[0.98] transition-all shadow-lg group">
+                    <button onClick={() => setShowCategories(!showCategories)} className="flex w-full items-center justify-between bg-[#1e1e24] p-4 rounded-3xl border border-white/5 active:scale-[0.98] transition-all shadow-lg group">
                         <div className="flex items-center gap-4">
                             <div className={`w-12 h-12 rounded-full ${selectedCategory.color} flex items-center justify-center text-2xl shadow-inner`}>
                                 {selectedCategory.icon}
                             </div>
                             <div className="text-left">
-                                <p className="font-mono text-[10px] uppercase tracking-widest text-[#a1a1aa] font-bold mb-1 opacity-80">Category</p>
+                                <p className="label-mono mb-1">Category</p>
                                 <p className="font-semibold text-white/90 text-[15px]">{selectedCategory.name}</p>
                             </div>
                         </div>
@@ -129,24 +129,24 @@ export default function TransferPage() {
             {/* Numpad */}
             <div className="grid grid-cols-3 gap-2 px-6 mt-10 flex-1 content-start mb-24">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-                    <button key={num} onClick={() => handleNumberClick(num)} className="h-16 flex items-center justify-center text-2xl font-light text-white rounded-2xl bg-[#1e1e24] active:bg-white/10 transition-colors border border-white/5">
+                    <button key={num} onClick={() => handleNumberClick(num)} className="keypad-btn">
                         {num}
                     </button>
                 ))}
                 <button onClick={() => alert('Decimals not supported in this demo')} className="h-16 flex items-center justify-center text-2xl font-medium text-white/30 rounded-2xl active:bg-white/5 transition-colors">
                     .
                 </button>
-                <button onClick={() => handleNumberClick(0)} className="h-16 flex items-center justify-center text-3xl font-light text-white rounded-2xl bg-[#1e1e24] active:bg-white/10 transition-colors border border-white/5">
+                <button onClick={() => handleNumberClick(0)} className="keypad-btn text-3xl">
                     0
                 </button>
-                <button onClick={handleDelete} className="h-16 flex items-center justify-center text-white/70 rounded-2xl bg-[#1e1e24] active:bg-white/10 transition-colors border border-white/5">
+                <button onClick={handleDelete} className="keypad-btn">
                     <Delete size={20} strokeWidth={2} />
                 </button>
             </div>
 
             {/* Send Money Button */}
             <div className="absolute bottom-6 left-0 right-0 px-6">
-                <button onClick={handleSend} className="w-full bg-[#6a73a3] text-white rounded-full py-4 text-sm font-bold tracking-wide active:scale-[0.98] transition-all shadow-xl shadow-indigo-500/10 hover:bg-[#7882b8]">
+                <button onClick={handleSend} className="w-full bg-[#6a73a3] text-white rounded-full py-5 text-sm font-bold tracking-wide active:scale-[0.98] transition-all shadow-xl shadow-indigo-500/10 hover:bg-[#7882b8]">
                     Send Money
                 </button>
             </div>

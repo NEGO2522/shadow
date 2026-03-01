@@ -9,15 +9,15 @@ export default function Dashboard() {
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
   return (
-    <div className="flex h-[100dvh] flex-col bg-[#141416] tracking-wide text-white overflow-y-auto relative mx-auto sm:border sm:border-neutral-800 max-w-md pb-24 font-sans">
+    <div className="app-screen pb-24">
 
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-12 pb-6">
+      <div className="screen-header">
         <div>
           <h1 className="text-xl font-medium tracking-tight">
             Hi 👋, Daniel
           </h1>
-          <p className="text-[#a1a1aa] text-sm mt-1 tracking-wide">
+          <p className="subtitle-sm mt-1">
             Welcome Back
           </p>
         </div>
@@ -31,7 +31,7 @@ export default function Dashboard() {
               className="rounded-full bg-white/10"
             />
           </div>
-          <button onClick={() => alert('Messages')} className="h-10 w-10 flex items-center justify-center rounded-full bg-[#1e1e24] text-gray-300 relative border border-white/5 active:scale-95 transition-transform">
+          <button onClick={() => alert('Messages')} className="btn-icon-round">
             <MessageSquare size={18} strokeWidth={2} />
             <div className="absolute top-2 right-2.5 h-1.5 w-1.5 bg-red-500 rounded-full border border-[#1e1e24]"></div>
           </button>
@@ -40,15 +40,14 @@ export default function Dashboard() {
 
       {/* Main Card */}
       <div className="px-6 relative z-10">
-        <div className="rounded-[32px] bg-gradient-to-br from-[#6b7b96] to-[#45546e] p-6 shadow-2xl relative overflow-hidden">
-
+        <div className="gradient-card">
           {/* Card background shapes */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
 
           <div className="flex justify-between items-start">
             <div className="space-y-1">
               <p className="text-white/80 text-sm font-medium">Total Balance</p>
-              <h2 className="text-[34px] font-semibold tracking-tight text-white">
+              <h2 className="title-xl">
                 $12,650.00
               </h2>
             </div>
@@ -72,14 +71,14 @@ export default function Dashboard() {
           </div>
 
           {/* Action Row inside Card */}
-          <div className="mt-5 flex gap-3 relative z-10">
-            <button onClick={() => alert('Pay flow')} className="flex items-center gap-2 bg-[#1b1c20] text-white px-6 py-3 rounded-[24px] shadow-lg text-sm font-semibold flex-1 justify-center active:scale-95 transition-transform group hover:bg-[#25262c]">
+          <div className="mt-6 flex gap-3 relative z-10">
+            <button onClick={() => alert('Pay flow')} className="btn-action-dark group">
               <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-emerald-400/20 transition-colors">
                 <QrCode size={14} className="text-emerald-400" />
               </div>
               Pay
             </button>
-            <Link href="/transfer" className="flex items-center gap-2 bg-[#8b9dba] text-black px-6 py-3 rounded-[24px] shadow-lg text-sm font-semibold flex-1 justify-center active:scale-95 transition-transform hover:bg-[#a8b8d4]">
+            <Link href="/transfer" className="btn-action-primary">
               <Send size={14} />
               Transfer
             </Link>
@@ -89,94 +88,53 @@ export default function Dashboard() {
 
       {/* Latest Transaction */}
       <div className="px-6 mt-10">
-        <h3 className="text-sm font-medium tracking-wide text-white/90 mb-4">Latest Transaction</h3>
+        <h3 className="text-sm font-medium tracking-wide text-white/90 mb-4 px-1">Latest Transaction</h3>
         <div className="space-y-3">
-
-          <div className="flex items-center justify-between bg-[#1b1b21] p-4 rounded-3xl border border-white/5">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#2a2a32] flex items-center justify-center overflow-hidden">
-                <Image src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Felix" width={36} height={36} />
+          {[
+            { name: 'Transfer for Work', date: '1 Sep 9:29', status: 'Pending', statusColor: 'text-neutral-400', amount: '+$120', avatar: 'Felix' },
+            { name: 'Transfer for Work', date: '1 Sep 9:29', status: 'Success', statusColor: 'text-emerald-500', amount: '-$120', avatar: 'Aneka' },
+            { name: 'Transfer for Work', date: '1 Sep 9:29', status: 'Success', statusColor: 'text-emerald-500', amount: '+$120', avatar: 'Sara' }
+          ].map((tx, idx) => (
+            <div key={idx} className="list-item-card">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#1e1e24] flex items-center justify-center overflow-hidden border border-white/5">
+                  <Image src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${tx.avatar}`} alt={tx.avatar} width={36} height={36} />
+                </div>
+                <div>
+                  <p className="font-medium text-white text-sm">{tx.name}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-neutral-500 mt-1 font-bold">{tx.date} | <span className={tx.statusColor}>{tx.status}</span></p>
+                </div>
               </div>
-              <div>
-                <p className="font-medium text-white text-sm">Transfer for Work</p>
-                <p className="text-xs text-neutral-500 mt-1">1 Sep 9:29 | <span className="text-neutral-400">Pending</span></p>
-              </div>
+              <p className="text-white font-semibold text-sm">{tx.amount}</p>
             </div>
-            <p className="text-white font-medium text-sm">+$120</p>
-          </div>
-
-          <div className="flex items-center justify-between bg-[#1b1b21] p-4 rounded-3xl border border-white/5">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#fcd4b6]/10 flex items-center justify-center overflow-hidden">
-                <Image src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" alt="Aneka" width={36} height={36} />
-              </div>
-              <div>
-                <p className="font-medium text-white text-sm">Transfer for Work</p>
-                <p className="text-xs text-neutral-500 mt-1">1 Sep 9:29 | <span className="text-emerald-500">Succes</span></p>
-              </div>
-            </div>
-            <p className="text-white font-medium text-sm">-$120</p>
-          </div>
-
-          <div className="flex items-center justify-between bg-[#1b1b21] p-4 rounded-3xl border border-white/5">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#bde0ca]/10 flex items-center justify-center overflow-hidden">
-                <Image src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sara" alt="Sara" width={36} height={36} />
-              </div>
-              <div>
-                <p className="font-medium text-white text-sm">Transfer for Work</p>
-                <p className="text-xs text-neutral-500 mt-1">1 Sep 9:29 | <span className="text-emerald-500">Succes</span></p>
-              </div>
-            </div>
-            <p className="text-white font-medium text-sm">+$120</p>
-          </div>
-
+          ))}
         </div>
       </div>
 
       {/* Bottom Floating Navigation */}
-      <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center w-full px-8 pointer-events-none">
+      <div className="bottom-nav-v2">
         <div
-          className="flex items-center justify-between gap-2 rounded-full bg-[#212128] p-2 shadow-2xl border border-white/5 mx-auto pointer-events-auto"
+          className="nav-bar-pill"
           onMouseLeave={() => setHoveredNav(null)}
         >
-
-          <Link
-            href="/"
-            onMouseEnter={() => setHoveredNav('home')}
-            className={`flex items-center justify-center rounded-full px-3 py-3 transition-all duration-300 ${hoveredNav === 'home' || hoveredNav === null ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}
-          >
-            <Home size={18} className={`shrink-0 ${hoveredNav === 'home' || hoveredNav === null ? 'text-black' : ''}`} />
-            <span className={`overflow-hidden text-xs font-medium transition-all duration-300 ${hoveredNav === 'home' || hoveredNav === null ? 'w-[42px] opacity-100 ml-1.5 text-black' : 'w-0 opacity-0'}`}>Home</span>
-          </Link>
-
-          <Link
-            href="/transactions"
-            onMouseEnter={() => setHoveredNav('transactions')}
-            className={`flex items-center justify-center rounded-full px-3 py-3 transition-all duration-300 ${hoveredNav === 'transactions' ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}
-          >
-            <Receipt size={18} className={`shrink-0 ${hoveredNav === 'transactions' ? 'text-black' : ''}`} />
-            <span className={`overflow-hidden text-xs font-medium transition-all duration-300 ${hoveredNav === 'transactions' ? 'w-[75px] opacity-100 ml-1.5 text-black' : 'w-0 opacity-0'}`}>Transactions</span>
-          </Link>
-
-          <Link
-            href="/history"
-            onMouseEnter={() => setHoveredNav('history')}
-            className={`flex items-center justify-center rounded-full px-3 py-3 transition-all duration-300 ${hoveredNav === 'history' ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}
-          >
-            <CreditCard size={18} className={`shrink-0 ${hoveredNav === 'history' ? 'text-black' : ''}`} />
-            <span className={`overflow-hidden text-xs font-medium transition-all duration-300 ${hoveredNav === 'history' ? 'w-[48px] opacity-100 ml-1.5 text-black' : 'w-0 opacity-0'}`}>History</span>
-          </Link>
-
-          <Link
-            href="/profile"
-            onMouseEnter={() => setHoveredNav('profile')}
-            className={`flex items-center justify-center rounded-full px-3 py-3 transition-all duration-300 ${hoveredNav === 'profile' ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'}`}
-          >
-            <User size={18} className={`shrink-0 ${hoveredNav === 'profile' ? 'text-black' : ''}`} />
-            <span className={`overflow-hidden text-xs font-medium transition-all duration-300 ${hoveredNav === 'profile' ? 'w-[42px] opacity-100 ml-1.5 text-black' : 'w-0 opacity-0'}`}>Profile</span>
-          </Link>
-
+          {[
+            { id: 'home', icon: Home, label: 'Home', href: '/', width: 'w-[42px]' },
+            { id: 'transactions', icon: Receipt, label: 'Transactions', href: '/transactions', width: 'w-[75px]' },
+            { id: 'history', icon: CreditCard, label: 'History', href: '/history', width: 'w-[48px]' },
+            { id: 'profile', icon: User, label: 'Profile', href: '/profile', width: 'w-[42px]' }
+          ].map((nav) => (
+            <Link
+              key={nav.id}
+              href={nav.href}
+              onMouseEnter={() => setHoveredNav(nav.id)}
+              className={`nav-link ${hoveredNav === nav.id || (hoveredNav === null && nav.id === 'home') ? 'nav-link-active' : 'nav-link-inactive'}`}
+            >
+              <nav.icon size={18} className="shrink-0" />
+              <span className={`overflow-hidden text-xs font-semibold transition-all duration-300 ${hoveredNav === nav.id || (hoveredNav === null && nav.id === 'home') ? nav.width + ' opacity-100 ml-1.5' : 'w-0 opacity-0'}`}>
+                {nav.label}
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
 
