@@ -17,7 +17,7 @@
 # ==========================================================================
 staging-settings:
   user-workflow:
-    workflow-name: "shadow-staging"
+    workflow-name: "vault-staging"
   workflow-artifacts:
     workflow-path: "."
     config-path: "./config.staging.json"
@@ -27,7 +27,7 @@ staging-settings:
 # ==========================================================================
 production-settings:
   user-workflow:
-    workflow-name: "shadow-production"
+    workflow-name: "vault-production"
   workflow-artifacts:
     workflow-path: "."
     config-path: "./config.production.json"
