@@ -13,6 +13,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@worldcoin/idkit": "^4.0.8",
+    "@worldcoin/idkit-core": "^4.0.11",
     "@worldcoin/mini-apps-ui-kit-react": "^1.0.2",
     "@worldcoin/minikit-js": "latest",
     "@worldcoin/minikit-react": "latest",
