@@ -1,71 +1,73 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
+pragma solidity ^0.8.26;
 
-interface IERC20 {
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-    function transfer(address to, uint256 amount) external returns (bool);
-}
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
+import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
+import {ReceiverTemplate} from "./ReceiverTemplate.sol";
 
-/// @title AuraVault — Shielded Pay-by-Human
-/// @notice Users deposit USDC with an encrypted recipient. The Chainlink CRE workflow
-///         verifies humanity via World ID (in a TEE), decrypts the recipient, and
-///         triggers a private payout through the CRE forwarder.
-contract AuraVault {
+/// @title Shadow — Shielded Multi-Chain Pay-by-Human
+contract Shadow is CCIPReceiver, ReceiverTemplate {
     IERC20 public immutable usdc;
 
-    /// @notice The Chainlink CRE forwarder that is allowed to call onReport.
-    address public immutable forwarder;
-
-    /// @notice Emitted when a user makes a shielded deposit.
-    /// @param sender    The depositor's address.
-    /// @param encryptedRecipient  ECIES/AES-encrypted recipient address (32 bytes).
-    /// @param amount    USDC amount deposited (6-decimal units).
-    event ShieldedDeposit(
-        address indexed sender,
-        bytes32 encryptedRecipient,
-        uint256 amount
-    );
-
-    /// @notice Emitted when the CRE workflow settles a payout.
-    /// @param recipient The decrypted recipient address.
-    /// @param amount    USDC amount paid out.
+    event ShieldedDeposit(address indexed sender, bytes32 encryptedRecipient, uint256 amount);
     event ShieldedPayout(address indexed recipient, uint256 amount);
 
-    constructor(address _usdc, address _forwarder) {
-        require(_usdc != address(0), "AuraVault: zero USDC address");
-        require(_forwarder != address(0), "AuraVault: zero forwarder address");
+    constructor(
+        address _usdc, 
+        address _forwarder, 
+        address _router
+    ) 
+        CCIPReceiver(_router)        // CCIP Router for cross-chain
+        ReceiverTemplate(_forwarder) // CRE Forwarder for same-chain
+    {
+        require(_usdc != address(0), "Shadow: zero USDC address");
         usdc = IERC20(_usdc);
-        forwarder = _forwarder;
     }
 
-    /// @notice Deposit USDC with an encrypted recipient address.
-    /// @dev    Caller must have approved this contract to spend `_amount` of USDC first.
-    ///         The `_encryptedRecipient` should be the recipient address encrypted
-    ///         with the DON's public key so only the TEE can decrypt it.
-    /// @param _encryptedRecipient  ECIES/AES-encrypted recipient (32 bytes).
-    /// @param _amount              USDC amount to deposit.
+    /**
+ * @dev Required by Solidity to resolve the conflict between CCIPReceiver and ReceiverTemplate.
+ * It ensures the contract correctly identifies that it supports both interfaces.
+ */
+function supportsInterface(bytes4 interfaceId)
+    public
+    view
+    virtual
+    override(CCIPReceiver, ReceiverTemplate)
+    returns (bool)
+{
+    return super.supportsInterface(interfaceId);
+}
+
+    /// @notice Same-chain deposit
     function deposit(bytes32 _encryptedRecipient, uint256 _amount) external {
-        require(_amount > 0, "AuraVault: zero amount");
-        require(
-            usdc.transferFrom(msg.sender, address(this), _amount),
-            "AuraVault: transfer failed"
-        );
+        require(_amount > 0, "Shadow: zero amount");
+        require(usdc.transferFrom(msg.sender, address(this), _amount), "Transfer failed");
         emit ShieldedDeposit(msg.sender, _encryptedRecipient, _amount);
     }
 
-    /// @notice Called by the Chainlink CRE forwarder to settle a payout.
-    /// @dev    The forwarder verifies the DON report before calling this.
-    ///         `report` is ABI-encoded as `(address recipient, uint256 amount)`.
-    /// @param report  ABI-encoded payout data from the CRE workflow.
-    function onReport(bytes calldata report) external {
-        require(msg.sender == forwarder, "AuraVault: only forwarder");
+    /// @notice Handler for SAME-CHAIN settlement (from CRE Forwarder)
+    /// This overrides the virtual function in ReceiverTemplate
+    function _processReport(bytes calldata report) internal override {
         (address recipient, uint256 amount) = abi.decode(report, (address, uint256));
-        require(recipient != address(0), "AuraVault: zero recipient");
-        require(amount > 0, "AuraVault: zero amount");
-        require(
-            usdc.transfer(recipient, amount),
-            "AuraVault: payout failed"
-        );
-        emit ShieldedPayout(recipient, amount);
+        _executePayout(recipient, amount);
+    }
+
+    /// @notice Handler for CROSS-CHAIN settlement (from CCIP Router)
+    /// This overrides the virtual function in CCIPReceiver
+    function _ccipReceive(Client.Any2EVMMessage memory message) internal override {
+        // Decode recipient from the data payload
+        address recipient = abi.decode(message.data, (address));
+        // Get amount from the tokens actually sent via CCIP
+        uint256 amount = message.destTokenAmounts[0].amount;
+        
+        _executePayout(recipient, amount);
+    }
+
+    /// @dev Internal helper to keep logic DRY
+    function _executePayout(address _recipient, uint256 _amount) internal {
+        require(_recipient != address(0), "Shadow: zero recipient");
+        require(usdc.transfer(_recipient, _amount), "Payout failed");
+        emit ShieldedPayout(_recipient, _amount);
     }
 }
