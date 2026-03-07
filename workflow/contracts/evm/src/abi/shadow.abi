@@ -266,6 +266,31 @@
 			{
 				"indexed": true,
 				"internalType": "address",
+				"name": "trader",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "encryptedOrder",
+				"type": "bytes"
+			},
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "orderId",
+				"type": "bytes32"
+			}
+		],
+		"name": "ShieldedOrder",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
 				"name": "recipient",
 				"type": "address"
 			},
@@ -443,6 +468,24 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes",
+				"name": "_encryptedOrder",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_orderId",
+				"type": "bytes32"
+			}
+		],
+		"name": "placeOrder",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

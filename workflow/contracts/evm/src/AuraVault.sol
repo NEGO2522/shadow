@@ -11,6 +11,7 @@ contract Shadow is CCIPReceiver, ReceiverTemplate {
     IERC20 public immutable usdc;
 
     event ShieldedDeposit(address indexed sender, bytes32 encryptedRecipient, uint256 amount);
+    event ShieldedOrder(address indexed trader, bytes encryptedOrder, bytes32 indexed orderId);
     event ShieldedPayout(address indexed recipient, uint256 amount);
 
     constructor(
@@ -38,6 +39,11 @@ function supportsInterface(bytes4 interfaceId)
 {
     return super.supportsInterface(interfaceId);
 }
+
+    /// @notice Submit a shielded dark-pool order
+    function placeOrder(bytes calldata _encryptedOrder, bytes32 _orderId) external {
+        emit ShieldedOrder(msg.sender, _encryptedOrder, _orderId);
+    }
 
     /// @notice Same-chain deposit
     function deposit(bytes32 _encryptedRecipient, uint256 _amount) external {

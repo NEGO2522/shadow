@@ -1,0 +1,3 @@
+[workspace]
+members = ["shared", "matching-engine", "pre-screener", "relayer", "kms"]
+resolver = "2"

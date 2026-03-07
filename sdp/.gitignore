@@ -1,0 +1,16 @@
+# Secrets — never commit
+.env
+*.env
+
+# Rust build artifacts
+target/
+**/.cargo-lock
+
+# Foundry artifacts
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+
+# OS
+.DS_Store

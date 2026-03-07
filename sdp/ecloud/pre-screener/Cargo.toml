@@ -1,0 +1,19 @@
+[package]
+name = "sdp-pre-screener"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["dev"]
+dev = []
+# tee: in production, swap mock EVM for a real revm + forked Sepolia state
+tee = []
+
+[dependencies]
+sdp-shared = { path = "../shared" }
+ethers-core = { version = "2", default-features = false }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1"
