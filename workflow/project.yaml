@@ -1,0 +1,19 @@
+# ==========================================================================
+# CRE PROJECT SETTINGS FILE
+# ==========================================================================
+
+# ==========================================================================
+staging-settings:
+  account:
+    workflow-owner-address: "0xC76F3E8e77cD40fAACf2C5F874774cAB1Ca9dB5d"
+  rpcs:
+    - chain-name: ethereum-testnet-sepolia
+      url: https://eth-sepolia.g.alchemy.com/v2/t7Oxw5b_OpDL6yQVWN70ZjxO6hTCaZeW
+
+# ==========================================================================
+production-settings:
+  account:
+    workflow-owner-address: "0xC76F3E8e77cD40fAACf2C5F874774cAB1Ca9dB5d"
+  rpcs:
+    - chain-name: ethereum-testnet-sepolia
+      url: https://eth-sepolia.g.alchemy.com/v2/t7Oxw5b_OpDL6yQVWN70ZjxO6hTCaZeW

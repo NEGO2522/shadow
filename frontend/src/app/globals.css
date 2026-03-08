@@ -1,0 +1,169 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #0f1011;
+  --foreground: #ffffff;
+  --card-bg: #1a1b1f;
+  --card-border: rgba(255, 255, 255, 0.06);
+  --accent-primary: #8b9dba;
+  --accent-secondary: #6b7b96;
+  --text-muted: #a1a1aa;
+  --glass-bg: rgba(30, 30, 36, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Base Styles */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Structured Component Classes --- */
+
+/* App Container */
+.app-screen {
+  @apply flex h-[100dvh] flex-col bg-[#0f1011] tracking-wide text-white overflow-y-auto relative mx-auto sm:border sm:border-neutral-800 max-w-md font-sans;
+}
+
+/* Header */
+.screen-header {
+  @apply flex items-center justify-between px-6 pt-12 pb-6;
+}
+
+/* Circular Buttons used in headers */
+.btn-icon-round {
+  @apply h-10 w-10 flex items-center justify-center rounded-full bg-[#1e1e24] text-gray-300 relative border border-white/5 active:scale-90 transition-all hover:bg-white/5;
+}
+
+/* Cards */
+.gradient-card {
+  @apply rounded-[32px] bg-gradient-to-br from-[#6b7b96] to-[#45546e] p-6 shadow-2xl relative overflow-hidden transition-transform duration-500;
+}
+
+.glass-card {
+  @apply bg-[#1a1b1f] p-4 rounded-3xl border border-white/5 shadow-lg active:scale-[0.98] transition-all;
+}
+
+.list-item-card {
+  @apply flex items-center justify-between bg-[#16161c] p-4 rounded-3xl border border-white/5 transition-all hover:bg-white/[0.02];
+}
+
+/* Text Styles */
+.title-xl {
+  @apply text-[34px] font-semibold tracking-tight text-white;
+}
+
+.subtitle-sm {
+  @apply text-[#a1a1aa] text-sm tracking-wide;
+}
+
+.label-mono {
+  @apply font-mono text-[10px] uppercase tracking-widest text-[#a1a1aa] font-bold opacity-80;
+}
+
+/* Bottom Navigation */
+.bottom-nav-v2 {
+  @apply fixed bottom-6 left-0 right-0 z-50 flex justify-center w-full px-8 pointer-events-none;
+}
+
+.nav-bar-pill {
+  @apply flex items-center justify-between gap-2 rounded-full bg-[#1a1b1f]/90 backdrop-blur-xl p-2 shadow-2xl border border-white/5 mx-auto pointer-events-auto;
+}
+
+.nav-link {
+  @apply flex items-center justify-center rounded-full px-4 py-3 transition-all duration-300;
+}
+
+.nav-link-active {
+  @apply bg-white text-black;
+}
+
+.nav-link-inactive {
+  @apply text-neutral-400 hover:text-white;
+}
+
+/* Action Buttons */
+.btn-action-primary {
+  @apply flex items-center gap-2 bg-[#8b9dba] text-black px-6 py-4 rounded-[28px] shadow-lg text-sm font-bold flex-1 justify-center active:scale-95 transition-all hover:bg-[#a8b8d4];
+}
+
+.btn-action-dark {
+  @apply flex items-center gap-2 bg-[#1b1c20] text-white px-6 py-4 rounded-[28px] shadow-lg text-sm font-bold flex-1 justify-center active:scale-95 transition-all border border-white/5 hover:bg-[#25262c];
+}
+
+/* Keypad / Custom Components */
+.keypad-btn {
+  @apply h-16 flex items-center justify-center text-2xl font-light text-white rounded-2xl bg-[#1e1e24] active:bg-white/10 transition-colors border border-white/5;
+}
+
+/* Header quick-action buttons (Pay / Receive) */
+.header-action-btn {
+  @apply flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-bold active:scale-95 transition-all;
+}
+.header-action-btn--primary {
+  @apply bg-[#8b9dba] text-black hover:bg-[#a8b8d4];
+}
+.header-action-btn--dark {
+  @apply bg-[#1e1e24] text-white border border-white/5 hover:bg-white/5;
+}
+
+/* World ID verified badge on avatar */
+.verified-badge {
+  @apply absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-400 rounded-full flex items-center justify-center border-2 border-[#0f1011];
+}
+
+/* Shielded mode toggle */
+.shield-toggle {
+  @apply relative w-10 h-5 rounded-full transition-colors duration-200;
+}
+.shield-toggle--on  { @apply bg-emerald-400; }
+.shield-toggle--off { @apply bg-white/20; }
+.shield-toggle__thumb {
+  @apply absolute top-0.5 h-4 w-4 bg-white rounded-full shadow transition-transform duration-200;
+}
+
+/* Shielded send button variant */
+.btn-action-shielded {
+  @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30;
+}
+
+/* Pay input */
+.pay-input {
+  @apply w-full bg-[#1e1e24] border border-white/5 rounded-2xl px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-emerald-500/40 transition-colors;
+}
+
+/* World ID verify button */
+.verify-btn {
+  @apply w-full flex items-center justify-center gap-2.5 bg-white text-black py-4 rounded-[28px] font-semibold text-sm tracking-wide active:scale-[0.98] transition-all hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_24px_rgba(255,255,255,0.12)];
+}
+
+/* Custom Scrollbar Helper */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

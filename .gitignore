@@ -1,0 +1,28 @@
+# ── Rust build artifacts ──────────────────────────────────────────────────────
+**/target/
+
+# ── Solidity / Foundry ────────────────────────────────────────────────────────
+sdp/contracts/lib/
+sdp/contracts/out/
+sdp/contracts/cache/
+
+# ── Go / WASM ─────────────────────────────────────────────────────────────────
+workflow/vault/tmp.wasm
+workflow/vault.wasm
+
+# ── Node / Next.js ────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env
+frontend/.env.local
+
+# ── Secrets / env ─────────────────────────────────────────────────────────────
+*.env
+.env*
+!.env.example
+!.env.sample
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
